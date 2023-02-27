@@ -1,0 +1,76 @@
+<div class="page background">
+  <h1 class="mb-4">{{'client.header' | translate}}</h1>
+  <button class="mb-2" mat-raised-button color="primary"
+          (click)="updateClient()">
+    {{'client.add-client' | translate}}
+  </button>
+  <div class="d-flex flex-lg-row flex-column">
+    <div class="me-3 col-lg-2 col-12 mb-4">
+      <app-client-filter *ngIf="showSearchBox" [clientSearchForm]="clientSearchForm"
+                         (close)="toggleSearchBox()" (reset)="reset()" (search)="search()"></app-client-filter>
+      <button *ngIf="!showSearchBox" mat-raised-button (click)="toggleSearchBox()">
+        <mat-icon>search</mat-icon>
+        {{'filter_title' | translate}}
+      </button>
+    </div>
+    <div class="table-responsive col-lg-10 col-md-12 col-sm-12">
+      <table class="table table-light table-striped table-hover" *ngIf="!!clients">
+        <thead>
+        <tr sort
+            [(predicate)]="predicate"
+            [(ascending)]="ascending"
+            [callback]="reload.bind(this)">
+          <th class="w-10 cursor-pointer" scope="col" sortBy="surname">
+            <div class="d-flex justify-content-between">
+              {{'client.name' | translate}}
+              <fa-icon [icon]="faSort"></fa-icon>
+            </div>
+          </th>
+          <th class="w-10 cursor-pointer" scope="col" sortBy="age">
+            <div class="d-flex justify-content-between">
+              {{'client.age' | translate}}
+              <fa-icon [icon]="faSort"></fa-icon>
+            </div>
+          </th>
+          <th class="w-25 cursor-pointer" scope="col" sortBy="city">
+            <div class="d-flex justify-content-between">
+              {{'client.address' | translate}}
+              <fa-icon [icon]="faSort"></fa-icon>
+            </div>
+          </th>
+          <th class="w-20" scope="col"></th>
+        </tr>
+        </thead>
+        <tbody *ngIf="!!clients.length; else emptyTable">
+        <tr *ngFor="let client of clients">
+          <td class="w-10">{{client.firstname}} {{client.surname}}</td>
+          <td class="w-10">{{client.age}}</td>
+          <!--       should be pipe for model address-->
+          <td class="w-25">{{client.post_code}} {{client.city}}, {{client.street}} {{client.house_number}} <span
+            *ngIf="client.apartment_number">/ {{client.apartment_number}}</span></td>
+          <td class="w-20">
+            <button class="me-3" mat-stroked-button color="primary"
+                    (click)="updateClient(client)">{{'button.update' | translate}}</button>
+            <button class="me-3" mat-stroked-button color="warn"
+                    (click)="deleteClient(client.id!)">{{'button.delete' | translate}}</button>
+            <button class="me-3" mat-stroked-button color="primary"
+                    (click)="detailsClient(client)">{{'button.details' | translate}}</button>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <nav>
+    <ul class="pagination mt-2 d-flex justify-content-end gap-2">
+      <button mat-raised-button [disabled]="page <= 0" (click)="previousPage()">< Previous</button>
+      <button mat-raised-button color="primary">{{page}}</button>
+      <button mat-raised-button [disabled]="isNextPageDisabled()" (click)="nextPage()">{{page + 1}}</button>
+      <button mat-raised-button [disabled]="isNextPageDisabled()" (click)="nextPage(2)">{{page + 2}}</button>
+      <button mat-raised-button [disabled]="isNextPageDisabled()" (click)="nextPage()">Next ></button>
+    </ul>
+  </nav>
+</div>
+
+<ng-template #emptyTable>
+  <div class="empty-table">{{'no_results' | translate}}</div>
+</ng-template>

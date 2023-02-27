@@ -1,0 +1,84 @@
+<div @leftRightAnimation class="search-criteria-panel" [formGroup]="orderSearchForm">
+  <div class="d-flex justify-content-between">
+    <h3 class="mb-3">Filtry</h3>
+    <button mat-button class="filter-close-button" (click)="closeV()">
+      <mat-icon class="close-icon">cancel</mat-icon>
+    </button>
+  </div>
+
+  <div class="d-flex">
+    <mat-form-field>
+      <mat-label>id</mat-label>
+      <input matInput type="text" name="total_price" formControlName="id">
+    </mat-form-field>
+  </div>
+
+  <div class="d-flex">
+    <mat-form-field>
+      <mat-label>client_surname</mat-label>
+      <input matInput type="text" name="client_surname" formControlName="client_surname">
+    </mat-form-field>
+  </div>
+
+  <div class="d-flex">
+    <mat-form-field>
+      <mat-label>car_mark</mat-label>
+      <input matInput type="text" name="car_mark" formControlName="car_mark">
+    </mat-form-field>
+  </div>
+
+  <mat-form-field>
+    <mat-label>is_paid</mat-label>
+    <mat-select formControlName="is_paid">
+      <mat-option [value]="1">
+        Tak
+      </mat-option>
+      <mat-option [value]="0">
+        Nie
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>is_rent</mat-label>
+    <mat-select formControlName="is_rent">
+      <mat-option [value]="1">
+        Tak
+      </mat-option>
+      <mat-option [value]="0">
+        Nie
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+
+  <mat-form-field>
+    <mat-label>is_returned</mat-label>
+    <mat-select formControlName="is_returned">
+      <mat-option [value]="1">
+        Tak
+      </mat-option>
+      <mat-option [value]="0">
+        Nie
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+
+  <mat-form-field>
+    <mat-label>is_additional_insurance</mat-label>
+    <mat-select formControlName="is_additional_insurance">
+      <mat-option [value]="1">
+        Tak
+      </mat-option>
+      <mat-option [value]="0">
+        Nie
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div class="d-flex justify-content-between">
+    <button mat-raised-button (click)="resetV()">Resetuj</button>
+    <button mat-raised-button color="primary" (click)="filter()">Filtruj</button>
+  </div>
+</div>

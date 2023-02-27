@@ -1,0 +1,79 @@
+<div class="page background">
+  <h1 class="mb-4">{{'order.header' | translate}} TODO =)</h1>
+  <button class="mb-2" mat-raised-button color="primary" (click)="updateOrder()">
+    {{'order.add-order' | translate}} TODO =)
+  </button>
+  <div class="d-flex flex-lg-row flex-column">
+    <div class="me-3 col-lg-2 col-12 mb-4">
+      <app-order-filter *ngIf="showSearchBox" [orderSearchForm]="orderSearchForm"
+                      (close)="toggleSearchBox()" (reset)="reset()" (search)="search()"></app-order-filter>
+      <button *ngIf="!showSearchBox" mat-raised-button (click)="toggleSearchBox()">
+        <mat-icon>search</mat-icon>FILTRY
+      </button>
+    </div>
+    <div class="table-responsive col-lg-10 col-md-12 col-sm-12">
+      <table class="table table-light table-striped table-hover" *ngIf="!!orders">
+      <thead>
+      <tr sort
+          [(predicate)]="predicate"
+          [(ascending)]="ascending"
+          [callback]="reload.bind(this)">
+        <th class="w-10 cursor-pointer" scope="col" sortBy="id">
+          <div class="d-flex justify-content-between">
+            {{'order.id' | translate}}
+            <fa-icon [icon]="faSort"></fa-icon>
+          </div>
+        </th>
+        <th class="w-10 cursor-pointer" scope="col" sortBy="total_price">
+          <div class="d-flex justify-content-between">
+            {{'order.total_price' | translate}}
+            <fa-icon [icon]="faSort"></fa-icon>
+          </div>
+        </th>
+        <th class="w-10 cursor-pointer" scope="col" sortBy="client_surname">
+          <div class="d-flex justify-content-between">
+            {{'order.client_surname' | translate}}
+            <fa-icon [icon]="faSort"></fa-icon>
+          </div>
+        </th>
+        <th class="w-10 cursor-pointer" scope="col" sortBy="car_mark">
+          <div class="d-flex justify-content-between">
+            {{'order.car_mark' | translate}}
+            <fa-icon [icon]="faSort"></fa-icon>
+          </div>
+        </th>
+        <th class="w-20" scope="col"></th>
+      </tr>
+      </thead>
+      <tbody *ngIf="!!orders.length; else emptyTable">
+      <tr *ngFor="let order of orders">
+        <td class="w-10">{{order.id}}</td>
+        <td class="w-10">{{order.total_price | currencyPipe}}</td>
+        <td class="w-10">{{order.client_firstname}} {{order.client_surname}}</td>
+        <td class="w-10">{{order.car_mark}}: {{order.car_model}}</td>
+        <td class="w-20">
+          <button class="me-3" mat-stroked-button color="primary"
+                  (click)="updateOrder(order)">{{'button.update' | translate}}</button>
+          <button class="me-3" mat-stroked-button color="warn"
+                  (click)="deleteOrder(order.id!)">{{'button.delete' | translate}}</button>
+          <button class="me-3" mat-stroked-button color="primary"
+                  (click)="detailsOrder(order)">{{'button.details' | translate}}</button>
+        </td>
+      </tr>
+    </table>
+    </div>
+  </div>
+  <nav>
+    <ul class="pagination mt-2 d-flex justify-content-end gap-2">
+      <button mat-raised-button [disabled]="page <= 0" (click)="previousPage()">< Previous</button>
+      <button mat-raised-button color="primary">{{page}}</button>
+      <button mat-raised-button [disabled]="isNextPageDisabled()" (click)="nextPage()">{{page + 1}}</button>
+      <button mat-raised-button [disabled]="isNextPageDisabled()" (click)="nextPage(2)">{{page + 2}}</button>
+      <button mat-raised-button [disabled]="isNextPageDisabled()" (click)="nextPage()">Next ></button>
+    </ul>
+  </nav>
+</div>
+
+<ng-template #emptyTable>
+  <div class="empty-table">Brak wyników</div>
+</ng-template>
